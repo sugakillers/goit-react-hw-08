@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchContacts } from '../redux/contacts/operations';
+import { fetchContact } from '../redux/contacts/operations';
 import { Box, Container } from '@mui/material';
 import { Toaster } from 'react-hot-toast';
 import ContactForm from '../components/ContactForm/ContactForm';
@@ -19,7 +19,7 @@ const ContactsPage = () => {
 
   const formRef = useRef(null);
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(fetchContact());
   }, [dispatch]);
 
   return (
