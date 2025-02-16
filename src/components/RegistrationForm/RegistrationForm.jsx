@@ -2,29 +2,24 @@ import { Box, Button, FormHelperText, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { validationSchema } from './validationSchema.js';
-
-import { login } from '../../redux/auth/operations.js';
+import { register } from '../../redux/auth/operations.js';
 import { showError } from '../../hotToast.js';
 
-const initialValues = {
-  email: '',
-  password: '',
-};
-const Login = () => {
+const RegistrationForm = () => {
   const dispatch = useDispatch();
 
   const formik = useFormik({
-    initialValues,
+    initialValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
     validationSchema: validationSchema,
     onSubmit: (values, action) => {
-      dispatch(login(values))
+      dispatch(register(values))
         .unwrap()
-        .then(() => {
-          action.resetForm();
-        })
-        .catch(() => {
-          showError('Wrong password or email!');
-        });
+        .catch(() => showError());
+      action.resetForm();
     },
   });
   return (
@@ -33,6 +28,21 @@ const Login = () => {
       onSubmit={formik.handleSubmit}
       sx={{ mt: 2, width: '100%' }}
     >
+      <TextField
+        fullWidth
+        id="name"
+        name="name"
+        label="Name"
+        value={formik.values.name}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.name && Boolean(formik.errors.name)}
+      />
+      <Box sx={{ minHeight: '25px', mt: '3px' }}>
+        {formik.touched.name && formik.errors.name && (
+          <FormHelperText error>{formik.errors.name} </FormHelperText>
+        )}
+      </Box>
       <TextField
         fullWidth
         id="email"
@@ -44,7 +54,7 @@ const Login = () => {
         onBlur={formik.handleBlur}
         error={formik.touched.email && Boolean(formik.errors.email)}
       />
-      <Box sx={{ minHeight: '25px', mt: '3px' }}>
+      <Box sx={{ minHeight: '25px', mt: '4px' }}>
         {formik.touched.email && formik.errors.email && (
           <FormHelperText error>{formik.errors.email} </FormHelperText>
         )}
@@ -61,7 +71,7 @@ const Login = () => {
         onBlur={formik.handleBlur}
         error={formik.touched.password && Boolean(formik.errors.password)}
       />
-      <Box sx={{ minHeight: '25px', mt: '3px' }}>
+      <Box sx={{ minHeight: '25px', mt: '5px' }}>
         {formik.touched.password && formik.errors.password && (
           <FormHelperText error>{formik.errors.password} </FormHelperText>
         )}
@@ -69,7 +79,7 @@ const Login = () => {
       <Button
         color="primary"
         variant="contained"
-        sx={{ mt: 2, mb: 5 }}
+        sx={{ mt: 1, mb: 1 }}
         fullWidth
         type="submit"
       >
@@ -79,4 +89,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default RegistrationForm;

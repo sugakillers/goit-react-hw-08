@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 import { Avatar, Box, Container, Typography } from '@mui/material';
-import Login from '../components/Login/Login';
+import Login from '../components/LoginForm/LoginForm';
 import { Toaster } from 'react-hot-toast';
 
 const StyledLink = styled(Link)(() => ({

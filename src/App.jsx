@@ -4,8 +4,8 @@ import { Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsRefreshing } from "./redux/auth/selectors.js";
 import { refresh } from "./redux/auth/operations";
-import { Page } from "./components/Page.jsx";
-import PrivateRoute from "./components/Check.jsx";
+import { Layout } from "./components/Layout.jsx";
+import PrivateRoute from "./components/PrivateRoute.jsx";
 import RestrictedRoute from "./components/RestrictedRoute.jsx";
 import Loader from "./components/Loader.jsx";
 const HomePage = lazy(() => import("./pages/HomePage.jsx"));
@@ -29,7 +29,7 @@ function App() {
   if (isRefreshing) return <Loader />;
 
   return (
-    <Page>
+    <Layout>
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -60,7 +60,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
-    </Page>
+    </Layout>
   );
 }
 

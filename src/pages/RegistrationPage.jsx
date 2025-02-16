@@ -1,5 +1,5 @@
 import { Avatar, Box, Container, Typography } from '@mui/material';
-import Register from '../components/Register/Register';
+import Register from '../components/RegistrationForm/RegistrationForm';
 import PersonAddTwoToneIcon from '@mui/icons-material/PersonAddTwoTone';
 
 import { Link } from 'react-router-dom';
