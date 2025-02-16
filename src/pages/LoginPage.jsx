@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 import { Avatar, Box, Container, Typography } from '@mui/material';
-import LoginForm from '../components/Form/Form';
+import Login from '../components/Login/Login';
 import { Toaster } from 'react-hot-toast';
 
 const StyledLink = styled(Link)(() => ({
@@ -29,7 +29,7 @@ const LoginPage = () => {
         <Typography component="h1" variant="h5">
           Sign In
         </Typography>
-        <LoginForm />
+        <Login />
         <StyledLink to="/register">I haven&apos;t had an account</StyledLink>
       </Box>
       <Toaster />

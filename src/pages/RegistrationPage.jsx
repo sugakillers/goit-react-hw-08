@@ -1,5 +1,5 @@
 import { Avatar, Box, Container, Typography } from '@mui/material';
-import RegisterForm from '../../components/RegisterForm/RegisterForm';
+import Register from '../components/Register/Register';
 import PersonAddTwoToneIcon from '@mui/icons-material/PersonAddTwoTone';
 
 import { Link } from 'react-router-dom';
@@ -32,7 +32,7 @@ const RegistrationPage = () => {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <RegisterForm />
+        <Register />
         <StyledLink to="/login">I already have an account</StyledLink>
       </Box>
       <Toaster />
