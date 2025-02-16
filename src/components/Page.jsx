@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { AppBar } from "./AppBar/AppBar";
 
-export const Layout = ({ children }) => {
+export const Page = ({ children }) => {
   return (
     <div>
       <AppBar />
