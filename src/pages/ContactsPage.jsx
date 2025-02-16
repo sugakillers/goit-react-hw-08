@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchContacts } from '../../redux/contacts/operations';
+import { fetchContacts } from '../redux/contacts/operations';
 import { Box, Container } from '@mui/material';
 import { Toaster } from 'react-hot-toast';
-import ContactForm from '../../components/ContactForm/ContactForm';
-import SearchBox from '../../components/SearchBox/SearchBox';
-import ContactList from '../../components/ContactList/ContactList';
+import ContactForm from '../components/ContactForm/ContactForm';
+import SearchBox from '../components/SearchBox/SearchBox';
+import ContactList from '../components/ContactList/ContactList';
 
 const ContactsPage = () => {
   const dispatch = useDispatch();
