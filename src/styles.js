@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
-export const theme = createTheme({
+export const styles = createTheme({
   palette: {
     primary: {
       light: '#fc8be0',
