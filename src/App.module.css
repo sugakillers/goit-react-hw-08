@@ -1,0 +1,9 @@
+.form_container {
+  max-width: 100;
+  padding: 32px;
+}
+.main_title {
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: rgb(255, 0, 191);
+}
