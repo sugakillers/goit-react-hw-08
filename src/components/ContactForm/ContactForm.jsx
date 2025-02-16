@@ -6,7 +6,7 @@ import { Box, Button, FormHelperText, TextField } from '@mui/material';
 import { useEffect } from 'react';
 import { showSuccess, showError } from '../../hotToast.js';
 
-import { ContactSchema } from './contactShema.js';
+import { ContactSchema } from './validationSchema.js';
 
 const initialValues = { name: '', number: '' };
 
