@@ -1,28 +1,77 @@
-import css from './Contact.module.css';
-import { IoMdPerson } from 'react-icons/io';
-import { FaPhoneAlt } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-import { removeContact } from '../../redux/contactsOps';
+import { useState } from 'react';
+import { deleteContact } from '../../redux/contacts/operations.js';
+import ConfirmModal from '../Modal/Modal.jsx';
+import { showSuccess, showError } from '../../hotToast.js';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+} from '@mui/material';
 
-const Contact = ({ id, name, number }) => {
+
+
+
+const Contact = ({ id, name, number, handleEditContact }) => {
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setConfirmModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setConfirmModalOpen(false);
+  };
+
   const dispatch = useDispatch();
 
-  const handleDelete = () => dispatch(removeContact(id));
+  const handleDelete = () => {
+    dispatch(deleteContact(id))
+      .then(() => showSuccess('deleted'))
+      .catch(() => showError());
+  };
 
   return (
-    <div className={css.contactItem}>
-      <div className={css.contactsData}>
-        <p><IoMdPerson className={css.icon} /> {name}</p>
-        <p><FaPhoneAlt className={css.icon} /> {number}</p>
-      </div>
-      <button className={css.button} type="button" onClick={handleDelete}>
-        Delete
-      </button>
-    </div>
+    <>
+      <Card 
+      sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <CardContent>
+          <Typography 
+          variant="h6" 
+          sx={{ fontSize: 14 }} gutterBottom>
+            {name}
+          </Typography>
+          <Typography 
+          variant="body2" 
+          color="text.secondary" 
+          component="div">
+            {number}
+          </Typography>
+        </CardContent>
+        <CardActions 
+        sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Button 
+          size="small" 
+          onClick={handleOpenModal}>
+            Delete
+          </Button>
+          <Button
+            size="small"
+            onClick={() => handleEditContact({ id, name, number })}
+          >
+            Edit
+          </Button>
+        </CardActions>
+      </Card>
+      <ConfirmModal
+        open={confirmModalOpen}
+        handleClose={handleCloseModal}
+        handleConfirm={handleDelete}
+        contact={{ name, number }}
+      />
+    </>
   );
 };
 
 export default Contact;
-
-
-

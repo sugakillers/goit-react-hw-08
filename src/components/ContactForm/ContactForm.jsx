@@ -1,60 +1,112 @@
 
-import { nanoid } from 'nanoid';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import css from './ContactForm.module.css';
+import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsOps.js';
-import { validationSchema } from '../../util.js';
+import { addContact, updateContact } from '../../redux/contacts/operations.js';
+import { Box, Button, FormHelperText, TextField } from '@mui/material';
+import { useEffect } from 'react';
+import { showSuccess, showError } from '../../hotToast.js';
 
+import { ContactSchema } from './contactShema.js';
 
-const ContactForm = () => {
+const initialValues = { name: '', number: '' };
+
+const ContactForm = ({ editContact, handleEditContact, formRef }) => {
   const dispatch = useDispatch();
-  const nameFormId = nanoid();
-  const numberFormId = nanoid();
 
-  const handleSubmit = (value, actions) => {
-    dispatch(addContact({ ...value, id: nanoid() }));
-    actions.resetForm();
-  };
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema: ContactSchema,
+    onSubmit: (values, action) => {
+      if (editContact) {
+        dispatch(updateContact({ id: editContact.id, ...values }))
+          .then(() => showSuccess('updated'))
+          .catch(() => showError());
+        handleEditContact(null);
+      } else {
+        dispatch(addContact({ ...values }))
+          .then(() => showSuccess('added'))
+          .catch(() => showError());
+      }
+      action.resetForm();
+    },
+  });
+
+  useEffect(() => {
+    if (!editContact) return;
+    formik.resetForm();
+    formik.setFieldValue('name', editContact.name);
+    formik.setFieldValue('number', editContact.number);
+  }, [editContact]);
 
   return (
-    <Formik
-    initialValues={{ name: '', number: '' }}
-      onSubmit={handleSubmit}
-      validationSchema={validationSchema}
+    <Box
+      ref={formRef}
+      component="form"
+      onSubmit={formik.handleSubmit}
+      sx={{
+        width: '100%',
+        maxWidth: '375px',
+      }}
     >
-      <Form className={css.form}>
-        <label htmlFor={nameFormId}>Name</label>
-        <Field
-          className={css.input}
-          type="text"
-          name="name"
-          id={nameFormId}
-          placeholder="Marilyn Monroe"
-        />
-        <ErrorMessage
-          className={css.error}
-          name="name"
-          component="span"
-        />
-        <label htmlFor={numberFormId}>Number</label>
-        <Field
-          className={css.input}
-          type="tel"
-          name="number"
-          id={numberFormId}
-          placeholder="380XXXXXXXXX "
-        />
-        <ErrorMessage
-          className={css.error}
-          name="number"
-          component="span"
-        />
-        <button className={css.button} type="submit">
-          Add contact
-        </button>
-      </Form>
-    </Formik>
+      <TextField
+        fullWidth
+        id="name"
+        name="name"
+        label="Name"
+        value={formik.values.name}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.name && Boolean(formik.errors.name)}
+      />
+      <Box sx={{ minHeight: '25px', mt: '3px' }}>
+        {formik.touched.name && formik.errors.name && (
+          <FormHelperText error>{formik.errors.name} </FormHelperText>
+        )}
+      </Box>
+      <TextField
+        fullWidth
+        id="number"
+        name="number"
+        label="Number"
+        type="text"
+        value={formik.values.number}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.number && Boolean(formik.errors.number)}
+      />
+      <Box sx={{ minHeight: '25px', mt: '3px' }}>
+        {formik.touched.number && formik.errors.number && (
+          <FormHelperText error>{formik.errors.number} </FormHelperText>
+        )}
+      </Box>
+      <Box sx={{ display: 'flex', gap: 1 }}>
+        {editContact && (
+          <Button
+            color="primary"
+            variant="contained"
+            sx={{ mt: 1, mb: 1 }}
+            fullWidth
+            type="button"
+            onClick={() => {
+              handleEditContact(null);
+              formik.resetForm();
+            }}
+          >
+            Cancel
+          </Button>
+        )}
+
+        <Button
+          color="primary"
+          variant="contained"
+          sx={{ mt: 1, mb: 1 }}
+          fullWidth
+          type="submit"
+        >
+          {editContact ? 'Edit' : 'Add contact'}
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
